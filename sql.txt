@@ -1,0 +1,48 @@
+use laravel_incidences;
+create table profesores(
+    id int PRIMARY KEY AUTO_INCREMENT,
+    nombre varchar(255) not null,
+    permisos int(1) not null,
+    tutor int(1) not null 
+);
+
+create table clases (
+    id int PRIMARY KEY AUTO_INCREMENT,
+    num_clase varchar(255) not null,
+    curso varchar (255) not null,
+    tutor int not null,
+    FOREIGN key (tutor) REFERENCES profesores(id) 
+);
+
+create table incidencias(
+	id int PRIMARY KEY AUTO_INCREMENT,
+    id_ordenador varchar(255) not null,
+    fecha datetime,
+    observaciones varchar(255)
+);
+
+create table pro_cla_inc(
+    id_pro int,
+    id_cla int,
+    id_inc int,
+    CONSTRAINT PK_ProClaInc PRIMARY KEY (id_pro, id_cla, id_inc),
+    FOREIGN KEY (id_pro) REFERENCES profesores(id),
+    FOREIGN KEY (id_cla) REFERENCES clases(id),
+    FOREIGN KEY (id_inc) REFERENCES incidencias(id)
+);
+
+create table ordenadores (
+    id int PRIMARY KEY AUTO_INCREMENT,
+    id_clase int not null,
+    num_pc varchar (255) not null,
+    alumno varchar (255),
+    FOREIGN key (id_clase) REFERENCES clases(id) 
+);
+
+create table ord_cla(
+	id_cla int,
+    id_ord int,
+    CONSTRAINT PK_OrdCla PRIMARY KEY (id_cla, id_ord),
+    FOREIGN KEY (id_cla) REFERENCES clases(id),
+    FOREIGN KEY (id_ord) REFERENCES ordenadores(id)
+);
